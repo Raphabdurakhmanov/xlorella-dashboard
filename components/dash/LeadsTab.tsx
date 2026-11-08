@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { AD_SETS, Lead, LeadStatus, leads as demoLeads } from "@/lib/demo";
+import { AD_SETS, AdSetId, Lead, LeadStatus, UNIT } from "@/lib/demo";
 import { fmtPct, fmtSum } from "@/lib/metrics";
 import { useApp } from "../Providers";
 import { Donut } from "./charts";
@@ -18,14 +18,23 @@ export const STATUS_COLOR: Record<LeadStatus, string> = {
 
 const setName = (id: string) => AD_SETS.find((s) => s.id === id)?.name ?? id;
 
-export function LeadsTab() {
+type Props = {
+  list: Lead[];
+  isDemo: boolean;
+  canEdit: boolean; // owner только смотрит
+  error: string;
+  addLead: (input: { name: string; phone: string; city: string; adSet: AdSetId; creative: number }) => Promise<boolean>;
+  updateLead: (id: number, changes: { status?: LeadStatus; amount?: number }) => void;
+};
+
+export function LeadsTab({ list, isDemo, canEdit, error, addLead, updateLead }: Props) {
   const { t } = useApp();
   const d = t.dash;
-  const [list, setList] = useState<Lead[]>(demoLeads);
   const [search, setSearch] = useState("");
   const [statusFilter, setStatusFilter] = useState<LeadStatus | "all">("all");
   const [showForm, setShowForm] = useState(false);
-  const [form, setForm] = useState({ name: "", phone: "", city: "Toshkent" });
+  const [saving, setSaving] = useState(false);
+  const [form, setForm] = useState({ name: "", phone: "", city: "Toshkent", adSet: "broad" as AdSetId, creative: 1 });
 
   const counts = STATUS_ORDER.map((s) => ({
     status: s,
@@ -40,29 +49,16 @@ export function LeadsTab() {
     return [l.name, l.phone, l.city, l.manager].join(" ").toLowerCase().includes(q);
   });
 
-  function changeStatus(id: number, status: LeadStatus) {
-    setList(list.map((l) => (l.id === id ? { ...l, status } : l)));
-  }
-
-  function addLead(e: React.FormEvent) {
+  async function handleAdd(e: React.FormEvent) {
     e.preventDefault();
     if (!form.name.trim()) return;
-    const newLead: Lead = {
-      id: Date.now(),
-      status: "new",
-      name: form.name.trim(),
-      phone: form.phone.trim(),
-      city: form.city.trim(),
-      adSet: "broad",
-      creative: 1,
-      manager: "Alisher",
-      amount: 0,
-      createdAt: new Date().toISOString().slice(0, 10),
-    };
-    // TODO: сохранять в Supabase, сейчас только локально
-    setList([newLead, ...list]);
-    setForm({ name: "", phone: "", city: "Toshkent" });
-    setShowForm(false);
+    setSaving(true);
+    const ok = await addLead({ ...form, name: form.name.trim(), phone: form.phone.trim(), city: form.city.trim() });
+    setSaving(false);
+    if (ok) {
+      setForm({ name: "", phone: "", city: "Toshkent", adSet: "broad", creative: 1 });
+      setShowForm(false);
+    }
   }
 
   return (
@@ -81,7 +77,7 @@ export function LeadsTab() {
             {d.status[c.status]} · {c.count}
           </button>
         ))}
-        <span className="demo-badge">{d.demo}</span>
+        {isDemo && <span className="demo-badge">{d.demo}</span>}
       </div>
 
       <section className="grid-1-2">
@@ -141,17 +137,31 @@ export function LeadsTab() {
         <article className="card glass">
           <div className="card-head">
             <h3>{d.leadsTitle}</h3>
-            <button className="btn-small" onClick={() => setShowForm(!showForm)}>+ {d.addLead}</button>
+            {canEdit && (
+              <button className="btn-small" onClick={() => setShowForm(!showForm)}>+ {d.addLead}</button>
+            )}
           </div>
 
           {showForm && (
-            <form className="inline-form" onSubmit={addLead}>
+            <form className="inline-form" onSubmit={handleAdd}>
               <input placeholder={d.col.name} value={form.name} onChange={(e) => setForm({ ...form, name: e.target.value })} required />
               <input placeholder={d.col.phone} value={form.phone} onChange={(e) => setForm({ ...form, phone: e.target.value })} />
               <input placeholder={d.col.city} value={form.city} onChange={(e) => setForm({ ...form, city: e.target.value })} />
-              <button className="btn-small" type="submit">OK</button>
+              <select className="pill-select" value={form.adSet} onChange={(e) => setForm({ ...form, adSet: e.target.value as AdSetId })}>
+                {AD_SETS.map((s) => (
+                  <option key={s.id} value={s.id}>{s.name}</option>
+                ))}
+              </select>
+              <select className="pill-select" value={form.creative} onChange={(e) => setForm({ ...form, creative: Number(e.target.value) })}>
+                {[1, 2, 3, 4].map((n) => (
+                  <option key={n} value={n}>#{n}</option>
+                ))}
+              </select>
+              <button className="btn-small" type="submit" disabled={saving}>{saving ? "…" : "OK"}</button>
             </form>
           )}
+
+          {error && <p className="form-error">{error}</p>}
 
           <input className="search" placeholder={d.search} value={search} onChange={(e) => setSearch(e.target.value)} />
 
@@ -177,7 +187,12 @@ export function LeadsTab() {
                       <select
                         className="status-select"
                         value={l.status}
-                        onChange={(e) => changeStatus(l.id, e.target.value as LeadStatus)}
+                        disabled={!canEdit}
+                        onChange={(e) => {
+                          const status = e.target.value as LeadStatus;
+                          // при переводе в "заказ" ставим цену по умолчанию, если суммы ещё нет
+                          updateLead(l.id, status === "order" && !l.amount ? { status, amount: UNIT.price } : { status });
+                        }}
                         style={{ borderColor: STATUS_COLOR[l.status], color: STATUS_COLOR[l.status] }}
                       >
                         {STATUS_ORDER.map((s) => (

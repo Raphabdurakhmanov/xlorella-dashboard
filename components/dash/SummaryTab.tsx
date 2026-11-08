@@ -1,7 +1,7 @@
 "use client";
 
 import { useRef, useState } from "react";
-import { AD_SETS, AdSetId, DAYS_PASSED, PLAN, daily, leads } from "@/lib/demo";
+import { AD_SETS, AdSetId, DayRow, Lead, PLAN } from "@/lib/demo";
 import { fill } from "@/lib/i18n";
 import {
   calcKpi, change, fmtNum, fmtPct, fmtSum, fmtUsd, sumRows, unitEconomics,
@@ -44,7 +44,14 @@ function Delta({ value, lowerIsBetter = false }: { value: number | null; lowerIs
 
 const SET_ICONS: Record<AdSetId, string> = { broad: ICONS.globe, healthy: ICONS.leaf, plant: ICONS.target };
 
-export function SummaryTab() {
+type Props = {
+  daily: DayRow[];
+  daysPassed: number;
+  leads: Lead[];
+  isDemo: boolean;
+};
+
+export function SummaryTab({ daily, daysPassed, leads, isDemo }: Props) {
   const { t } = useApp();
   const d = t.dash;
   const [period, setPeriod] = useState<"all" | "last3">("all");
@@ -53,13 +60,13 @@ export function SummaryTab() {
 
   // фильтруем строки
   const bySet = daily.filter((r) => adSet === "all" || r.adSet === adSet);
-  const rows = period === "all" ? bySet : bySet.filter((r) => r.day > DAYS_PASSED - 3);
+  const rows = period === "all" ? bySet : bySet.filter((r) => r.day > daysPassed - 3);
   const totals = sumRows(rows);
   const kpi = calcKpi(totals);
 
   // для стрелок: последние 3 дня против 3 дней до них
-  const last3 = sumRows(bySet.filter((r) => r.day > DAYS_PASSED - 3));
-  const prev3 = sumRows(bySet.filter((r) => r.day > DAYS_PASSED - 6 && r.day <= DAYS_PASSED - 3));
+  const last3 = sumRows(bySet.filter((r) => r.day > daysPassed - 3));
+  const prev3 = sumRows(bySet.filter((r) => r.day > daysPassed - 6 && r.day <= daysPassed - 3));
   const kLast = calcKpi(last3);
   const kPrev = calcKpi(prev3);
 
@@ -103,13 +110,13 @@ export function SummaryTab() {
             <option key={s.id} value={s.id}>{s.name}</option>
           ))}
         </select>
-        <span className="demo-badge">{d.demo}</span>
+        {isDemo && <span className="demo-badge">{d.demo}</span>}
       </div>
 
       {/* hero */}
       <section className="hero-card glass">
         <div className="hero-card-text">
-          <span className="eyebrow">{fill(d.dayOf, { d: DAYS_PASSED, n: PLAN.days })}</span>
+          <span className="eyebrow">{fill(d.dayOf, { d: daysPassed, n: PLAN.days })}</span>
           <h1 className="dash-title">
             {d.heroA}<br />{d.heroB}<br /><span className="neon">{d.heroC}</span>
           </h1>
@@ -165,7 +172,7 @@ export function SummaryTab() {
       {/* группы объявлений */}
       <section className="cards-3">
         {AD_SETS.map((s) => {
-          const st = sumRows(daily.filter((r) => r.adSet === s.id && (period === "all" || r.day > DAYS_PASSED - 3)));
+          const st = sumRows(daily.filter((r) => r.adSet === s.id && (period === "all" || r.day > daysPassed - 3)));
           const k = calcKpi(st);
           const factShare = allSpend > 0 ? sumRows(daily.filter((r) => r.adSet === s.id)).spend / allSpend : 0;
           return (
@@ -232,9 +239,8 @@ export function SummaryTab() {
           <h3>{d.checklistTitle}</h3>
           <ul className="checklist">
             {d.checklist.map((item, i) => (
-              // в демо отмечены первые 4 пункта
-              <li key={i} className={i < 4 ? "done" : ""}>
-                <span className="check">{i < 4 ? "✓" : ""}</span>
+                            <li key={i} className={isDemo && i < 4 ? "done" : ""}>
+                <span className="check">{isDemo && i < 4 ? "✓" : ""}</span>
                 {item}
               </li>
             ))}
@@ -292,7 +298,7 @@ export function SummaryTab() {
         <div className="bottom-item">
           <span className="round-icon"><Icon d={ICONS.chart} /></span>
           <div>
-            <b>{fmtPct(ordersFromLeads / leads.length, 0)}</b>
+            <b>{fmtPct(leads.length ? ordersFromLeads / leads.length : null, 0)}</b>
             <small>{d.conversion}</small>
           </div>
         </div>

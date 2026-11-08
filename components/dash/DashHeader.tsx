@@ -2,6 +2,7 @@
 
 import { useRouter } from "next/navigation";
 import { useState } from "react";
+import { Profile } from "@/lib/data";
 import { getSupabase } from "@/lib/supabase";
 import { Logo } from "../Logo";
 import { useApp } from "../Providers";
@@ -10,7 +11,18 @@ import { Toggles } from "../Toggles";
 export const TABS = ["summary", "leads", "adsets", "orders", "budget", "stock", "repeat", "notes"] as const;
 export type Tab = (typeof TABS)[number];
 
-export function DashHeader({ tab, onTab }: { tab: Tab; onTab: (t: Tab) => void }) {
+// "Alisher Baxramov" -> "AB"
+function initials(name?: string) {
+  if (!name) return "?";
+  return name
+    .split(/[\s@.]+/)
+    .filter(Boolean)
+    .slice(0, 2)
+    .map((w) => w[0].toUpperCase())
+    .join("");
+}
+
+export function DashHeader({ tab, onTab, profile }: { tab: Tab; onTab: (t: Tab) => void; profile: Profile | null }) {
   const { t } = useApp();
   const router = useRouter();
   const [menuOpen, setMenuOpen] = useState(false);
@@ -42,12 +54,12 @@ export function DashHeader({ tab, onTab }: { tab: Tab; onTab: (t: Tab) => void }
         <Toggles />
         <div className="profile">
           <button className="avatar" onClick={() => setMenuOpen(!menuOpen)} aria-expanded={menuOpen}>
-            AB
+            {initials(profile?.name)}
           </button>
           {menuOpen && (
             <div className="profile-menu glass">
-              <div className="profile-name">Alisher B.</div>
-              <div className="muted small">Admin</div>
+              <div className="profile-name">{profile?.name ?? "—"}</div>
+              <div className="muted small">{profile ? t.dash.roles[profile.role] : ""}</div>
               <button onClick={logout}>{t.dash.logout}</button>
             </div>
           )}

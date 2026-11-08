@@ -49,6 +49,9 @@ const ru = {
   dash: {
     demo: "Демо-данные",
     logout: "Выйти",
+    roles: { admin: "Администратор", manager: "Менеджер", owner: "Владелец", pending: "Без доступа" },
+    pendingTitle: "Доступ ещё не выдан",
+    pendingText: "Попросите администратора назначить вам роль.",
     tabs: {
       summary: "Сводка",
       leads: "Лиды",
@@ -176,6 +179,9 @@ const en: Dict = {
   dash: {
     demo: "Demo data",
     logout: "Log out",
+    roles: { admin: "Admin", manager: "Manager", owner: "Owner", pending: "No access" },
+    pendingTitle: "No access yet",
+    pendingText: "Ask the admin to assign you a role.",
     tabs: {
       summary: "Summary",
       leads: "Leads",
@@ -301,6 +307,9 @@ const uz: Dict = {
   dash: {
     demo: "Demo ma’lumotlar",
     logout: "Chiqish",
+    roles: { admin: "Administrator", manager: "Menejer", owner: "Egasi", pending: "Ruxsat yo‘q" },
+    pendingTitle: "Ruxsat hali berilmagan",
+    pendingText: "Administratordan sizga rol berishini so‘rang.",
     tabs: {
       summary: "Umumiy",
       leads: "Murojaatlar",
