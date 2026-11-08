@@ -35,7 +35,7 @@ const ru = {
   login: {
     title: "Вход в панель",
     subtitle: "Используйте рабочую почту",
-    email: "Email",
+    email: "Логин или email",
     password: "Пароль",
     submit: "Войти",
     loading: "Входим…",
@@ -165,7 +165,7 @@ const en: Dict = {
   login: {
     title: "Sign in",
     subtitle: "Use your work email",
-    email: "Email",
+    email: "Login or email",
     password: "Password",
     submit: "Sign in",
     loading: "Signing in…",
@@ -293,7 +293,7 @@ const uz: Dict = {
   login: {
     title: "Panelga kirish",
     subtitle: "Ish pochtangizdan foydalaning",
-    email: "Email",
+    email: "Login yoki email",
     password: "Parol",
     submit: "Kirish",
     loading: "Kirilmoqda…",

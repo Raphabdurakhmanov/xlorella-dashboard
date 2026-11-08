@@ -5,6 +5,13 @@ import { useRouter } from "next/navigation";
 import { getSupabase, supabaseReady } from "@/lib/supabase";
 import { useApp } from "./Providers";
 
+// Можно входить по короткому логину (Rose) — он превращается в rose@xlorella.uz.
+// Supabase хранит пользователей по email, поэтому логин = email без домена.
+function loginToEmail(login: string) {
+  const v = login.trim().toLowerCase();
+  return v.includes("@") ? v : `${v}@xlorella.uz`;
+}
+
 export function LoginCard() {
   const { t } = useApp();
   const router = useRouter();
@@ -25,7 +32,7 @@ export function LoginCard() {
     }
 
     setLoading(true);
-    const { error } = await supabase.auth.signInWithPassword({ email, password });
+    const { error } = await supabase.auth.signInWithPassword({ email: loginToEmail(email), password });
     setLoading(false);
 
     if (error) {
@@ -56,9 +63,9 @@ export function LoginCard() {
         <label>
           <span>{t.login.email}</span>
           <input
-            type="email"
-            autoComplete="email"
-            placeholder="name@xlorella.uz"
+            type="text"
+            autoComplete="username"
+            placeholder="Rose"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
             required={supabaseReady}
