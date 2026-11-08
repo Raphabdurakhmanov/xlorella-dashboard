@@ -124,7 +124,7 @@ img { max-width: 100%; height: auto; }
   background:rgba(14,36,24,.56); color:var(--accent);
 }
 .hero-title {
-  font-family:var(--font-head, system-ui), sans-serif; font-size:clamp(44px, 5vw, 80px); white-space:nowrap;
+  font-family:var(--font-head, system-ui), sans-serif; font-size:clamp(56px, 7.2vw, 104px);
   line-height:.94; letter-spacing:1px; margin:20px 0 8px; font-weight:800;
 }
 .neon { color:var(--accent); text-shadow:0 0 28px color-mix(in srgb, var(--accent) 52%, transparent); }
@@ -429,3 +429,42 @@ img { max-width: 100%; height: auto; }
   .condensation-drop, .hero-visual::after { animation: none !important; }
   .condensation-drop { opacity: 0; }
 }
+
+/* Lifera editorial hero redesign — realistic open product stage */
+.landing {
+  padding: 22px clamp(20px, 5vw, 84px) 34px;
+  background:
+    linear-gradient(90deg, rgba(2,14,8,.97) 0%, rgba(3,20,12,.83) 32%, rgba(4,29,16,.62) 59%, rgba(2,15,9,.9) 100%),
+    url('/brand/product-scene.jpg') center 53% / cover no-repeat;
+}
+.landing::before { content:""; position:absolute; inset:0; pointer-events:none; background:radial-gradient(ellipse 28% 57% at 50% 50%,rgba(88,211,51,.21),transparent 85%), linear-gradient(180deg,rgba(1,9,4,.08), rgba(1,9,4,.54)); }
+.landing .bubble {opacity:.26; }
+.landing-top { min-height:76px; margin-bottom:2px; padding:7px 25px; border:1px solid rgba(230,255,220,.22); border-radius:32px; background:linear-gradient(150deg,rgba(177,236,178,.11),rgba(7,33,18,.33)); backdrop-filter:blur(24px) saturate(130%); box-shadow:inset 0 1px rgba(255,255,255,.21),0 18px 60px rgba(0,0,0,.18); }
+.landing-top .logo-image { width:162px; max-height:62px; object-fit:contain; }
+.hero { min-height: min(740px,calc(100vh - 210px)); grid-template-columns:minmax(315px,1.05fr) minmax(320px,1fr) minmax(320px,.88fr); gap:16px; }
+.hero-text { position:relative; z-index:4; padding:10px 0 20px; }
+.hero-title { font-size:clamp(55px,6.2vw,96px); letter-spacing:-2px; margin-top:24px; text-shadow:0 12px 25px rgba(0,0,0,.28); }
+.hero-sub { letter-spacing:2.5px; }
+.hero-desc { max-width:390px; }
+.hero-visual.glass { height:min(690px, 77vh); overflow:visible; border:0; background:transparent; box-shadow:none; backdrop-filter:none; padding:0; }
+.hero-visual .visual-scene, .hero-visual .visual-vignette { display:none; }
+.hero-visual .pedestal {bottom:0; height:73px; width:76%; background:radial-gradient(ellipse,rgba(142,255,74,.55),rgba(66,133,29,.18) 64%,transparent 75%); filter:blur(14px); }
+.hero-visual .bottle {width:min(98%,470px); transform:rotate(-2deg) translateY(3px); filter:drop-shadow(0 25px 25px #000a) drop-shadow(0 0 45px #66ea3d33); }
+.hero-login {position:relative; z-index:5;}
+.login-card.glass { border-radius:31px; padding:clamp(24px,2.4vw,38px); background:linear-gradient(125deg,rgba(184,243,184,.17),rgba(31,68,39,.14) 39%,rgba(5,23,13,.40) 88%); border:1px solid rgba(220,255,214,.42); box-shadow:inset 1px 1px 0 rgba(255,255,255,.27),inset -1px -1px 0 rgba(147,248,130,.12), 0 34px 85px rgba(0,0,0,.32), 0 0 50px rgba(157,255,150,.04); backdrop-filter:blur(32px) saturate(170%) brightness(1.14); }
+.login-card.glass::before {content:"";display:block;position:absolute;inset:1px 1px auto; height:75px;border-radius:30px 30px 70% 70%;pointer-events:none;background:linear-gradient(180deg,rgba(255,255,255,.12),transparent);}
+.login-card {position:relative;}
+.login-card input {background:rgba(1,13,7,.54);border:1px solid rgba(213,255,213,.24);box-shadow:inset 0 2px 8px rgba(0,0,0,.19),inset 0 1px rgba(255,255,255,.09);}
+.hero-point.glass,.feature-strip.glass {background:linear-gradient(125deg,rgba(201,250,194,.14),rgba(13,42,23,.49)); border:1px solid rgba(230,255,223,.3); backdrop-filter:blur(25px) saturate(150%); box-shadow:inset 0 1px rgba(255,255,255,.16),0 18px 45px rgba(0,0,0,.18); }
+.feature-strip {max-width:1400px;}
+[data-theme="light"] .landing {background:linear-gradient(90deg,#e9f7e9ed,#d9eedaba),url('/brand/product-scene.jpg') center / cover;}
+[data-theme="light"] .login-card.glass {background:linear-gradient(135deg,#ffffffc9,#f4fff5ab);}
+@media (max-width:1220px){.hero{grid-template-columns:1fr 1fr;grid-template-areas:"text text" "visual login";}.hero-visual.glass{height:610px;}.hero-text{text-align:center;}.hero-desc{margin-inline:auto;}}
+@media (max-width:860px){.hero{grid-template-columns:1fr;grid-template-areas:"text" "visual" "login";}.hero-visual.glass{height:560px;}.hero-login{justify-content:center;}.landing-top{padding:6px 12px;}.landing{background-position:55% center;}.feature-strip{margin-top:24px;}}
+@media (max-width:600px){.landing-top .logo-image{width:114px;}.hero-title{font-size:clamp(50px,15vw,78px);}.hero-visual.glass{height:490px;}.hero-visual .bottle{width:min(94%,360px);}.landing-top{min-height:66px;}.login-card.glass{margin-top:0;}}
+
+/* бутылка: ограничиваем по высоте, иначе узкое фото растягивается выше экрана */
+.hero-visual .bottle { width:auto; height:min(640px, 72vh); display:flex; justify-content:center; }
+.hero-visual .product-motion { width:auto; height:100%; }
+.hero-visual .bottle-image { width:auto; height:100%; }
+@media (max-width:600px){ .hero-visual .bottle { width:auto; height:440px; } }

@@ -7,16 +7,6 @@ import { Logo } from "@/components/Logo";
 import { useApp } from "@/components/Providers";
 import { Toggles } from "@/components/Toggles";
 
-function ArrowDot() {
-  return (
-    <span className="arrow-dot" aria-hidden="true">
-      <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round">
-        <path d="M7 17L17 7M9 7h8v8" />
-      </svg>
-    </span>
-  );
-}
-
 export default function LandingPage() {
   const { t } = useApp();
   const l = t.landing;
@@ -67,29 +57,7 @@ export default function LandingPage() {
           <div className="visual-vignette" aria-hidden="true" />
           <div className="pedestal" aria-hidden="true" />
 
-          <div className="visual-badge glass">
-            <span className="visual-badge-top">Lifera</span>
-            <strong>{l.subtitle}</strong>
-            <small>{l.callChlorophyllSub}</small>
-          </div>
-
           <Bottle className="bottle" />
-
-          <div className="callout c1 glass">
-            <ArrowDot />
-            <b>{l.callChlorophyll}</b>
-            <small>{l.callChlorophyllSub}</small>
-          </div>
-          <div className="callout c2 glass">
-            <ArrowDot />
-            <b>{l.callSyrup}</b>
-            <small>{l.callSyrupSub}</small>
-          </div>
-          <div className="callout c3 glass">
-            <ArrowDot />
-            <b>{l.callAlga}</b>
-            <small>{l.callAlgaSub}</small>
-          </div>
         </div>
 
         <div className="hero-login">
