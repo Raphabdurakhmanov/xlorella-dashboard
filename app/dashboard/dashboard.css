@@ -992,3 +992,8 @@
   .chart-box { overflow-x: auto; }
   .chart-box svg { min-width: 520px; }
 }
+
+/* логотип в шапке дашборда — компактный */
+.dash-header .logo-image { width: 120px; height: auto; max-height: 48px; object-fit: contain; display: block; }
+.dash-header { padding-top: 6px; padding-bottom: 6px; }
+@media (max-width: 560px) { .dash-header .logo-image { width: 90px; } }
