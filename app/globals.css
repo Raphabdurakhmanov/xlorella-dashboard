@@ -327,3 +327,105 @@ img { max-width: 100%; height: auto; }
   .login-card { padding: 24px 20px; border-radius: 24px; }
   .feature-strip { grid-template-columns:1fr; }
 }
+
+/* LIFERA: premium water / condensation motion layer */
+.hero-visual { isolation: isolate; }
+.visual-scene {
+  animation: lifera-water-breathe 14s ease-in-out infinite alternate;
+  will-change: transform;
+}
+.visual-scene::after {
+  content: "";
+  position: absolute;
+  inset: 58% -15% -4%;
+  pointer-events: none;
+  background:
+    repeating-radial-gradient(ellipse at 54% 70%,
+      transparent 0 32px,
+      rgba(177, 255, 197, .10) 34px 35px,
+      transparent 37px 74px);
+  mask-image: linear-gradient(to bottom, transparent, #000 46%, transparent);
+  opacity: .55;
+  transform: scale(1.1);
+  animation: lifera-water-ripples 9s ease-in-out infinite;
+}
+.product-motion {
+  position: relative;
+  z-index: 2;
+  width: 100%;
+  overflow: hidden;
+  border-radius: 44% 44% 15% 15% / 16% 16% 4% 4%;
+}
+.bottle-image { position: relative; z-index: 1; }
+.bottle-glint {
+  position: absolute;
+  inset: 4% 8% 5%;
+  z-index: 3;
+  pointer-events: none;
+  background: linear-gradient(104deg,
+    transparent 21%,
+    rgba(232, 255, 243, 0) 37%,
+    rgba(232, 255, 243, .20) 46%,
+    rgba(232, 255, 243, .04) 51%,
+    transparent 57%);
+  opacity: 0;
+  mix-blend-mode: screen;
+  animation: lifera-sheen 11s ease-in-out infinite;
+}
+.condensation {
+  position: absolute;
+  inset: 0;
+  z-index: 4;
+  pointer-events: none;
+}
+.condensation-drop {
+  position: absolute;
+  border-radius: 45% 55% 55% 45%;
+  opacity: 0;
+  background: radial-gradient(circle at 30% 25%, #fff 0 13%, rgba(216,255,233,.8) 20%, rgba(175,248,199,.45) 47%, rgba(125,220,174,.08) 82%);
+  box-shadow: 0 0 2px rgba(255,255,255,.8), 0 2px 4px rgba(4,26,15,.5);
+  animation-name: lifera-droplet-slide;
+  animation-timing-function: cubic-bezier(.28,.05,.5,1);
+  animation-iteration-count: infinite;
+  will-change: transform, opacity;
+}
+.hero-visual::after {
+  content: "";
+  position: absolute;
+  left: 18%; right: 18%; bottom: 5%; height: 9%;
+  border-radius: 50%;
+  pointer-events: none;
+  background: radial-gradient(ellipse, rgba(186,255,166,.26), transparent 70%);
+  filter: blur(12px);
+  animation: lifera-water-glow 7s ease-in-out infinite;
+}
+@keyframes lifera-water-breathe {
+  0% { transform: scale(1.04) translate3d(0,0,0); }
+  100% { transform: scale(1.095) translate3d(-1.1%,.65%,0); }
+}
+@keyframes lifera-water-ripples {
+  0% { opacity: .12; transform: scale(.90); }
+  48% { opacity: .52; }
+  100% { opacity: .10; transform: scale(1.18); }
+}
+@keyframes lifera-droplet-slide {
+  0%, 12% { transform: translate3d(0,-6px,0) scale(.65, .8); opacity: 0; }
+  22% { opacity: .74; }
+  60% { opacity: .68; }
+  89% { transform: translate3d(-3px, var(--drop-travel), 0) scale(.85, 1.28); opacity: .3; }
+  100% { transform: translate3d(-4px, calc(var(--drop-travel) + 16px),0); opacity: 0; }
+}
+@keyframes lifera-sheen {
+  0%, 21%, 86%, 100% { opacity: 0; transform: translateX(-55%); }
+  40% { opacity: .6; }
+  68% { opacity: .10; transform: translateX(65%); }
+}
+@keyframes lifera-water-glow {
+  0%, 100% { opacity: .38; transform: scale(.92); }
+  50% { opacity: .74; transform: scale(1.08); }
+}
+@media (prefers-reduced-motion: reduce) {
+  .visual-scene, .visual-scene::after, .bottle-glint,
+  .condensation-drop, .hero-visual::after { animation: none !important; }
+  .condensation-drop { opacity: 0; }
+}
