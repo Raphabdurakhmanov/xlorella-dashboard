@@ -1,6 +1,6 @@
 "use client";
 
-import { Bottle } from "@/components/Bottle";
+import Image from "next/image";
 import { Bubbles } from "@/components/Bubbles";
 import { LoginCard } from "@/components/LoginCard";
 import { Logo } from "@/components/Logo";
@@ -52,8 +52,11 @@ export default function LandingPage() {
 
         {/* центр — бутылка и выноски */}
         <div className="hero-visual">
-          <div className="pedestal" aria-hidden="true" />
-          <Bottle className="bottle" />
+          
+          <div className="product-photo-frame">
+            <Image src="/brand/lifera-product.jpg" alt="Lifera XLORELLA — original chlorella drink bottle beside a mountain lake" fill sizes="(max-width: 680px) 100vw, (max-width: 1150px) 50vw, 33vw" priority className="product-photo" />
+            <div className="product-photo-caption"><span className="photo-caption-mark">LIFERA</span><span>XLORELLA · NATURAL BOTANICAL DRINK</span></div>
+          </div>
 
           <div className="callout c1">
             <ArrowDot />
