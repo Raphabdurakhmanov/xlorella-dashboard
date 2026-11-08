@@ -174,24 +174,26 @@ export function useDailyStats(leads: Lead[]) {
   const [loading, setLoading] = useState(true);
   const isDemo = !getSupabase();
 
-  useEffect(() => {
+  const load = useCallback(async () => {
     const supabase = getSupabase();
     if (!supabase) {
       setLoading(false);
       return;
     }
-    (async () => {
-      const { data } = await supabase
-        .from("ad_stats")
-        .select("day, ad_set, creative, spend, impressions, clicks, dialogs")
-        .order("day");
-      setStats((data as StatRow[]) ?? []);
-      setLoading(false);
-    })();
+    const { data } = await supabase
+      .from("ad_stats")
+      .select("day, ad_set, creative, spend, impressions, clicks, dialogs")
+      .order("day");
+    setStats((data as StatRow[]) ?? []);
+    setLoading(false);
   }, []);
 
+  useEffect(() => {
+    load();
+  }, [load]);
+
   if (isDemo) {
-    return { rows: demoDaily, daysPassed: DAYS_PASSED, loading: false, isDemo };
+    return { rows: demoDaily, daysPassed: DAYS_PASSED, loading: false, isDemo, reload: load };
   }
 
   // номера дней теста по порядку дат
@@ -216,5 +218,5 @@ export function useDailyStats(leads: Lead[]) {
     };
   });
 
-  return { rows, daysPassed: dates.length, loading, isDemo };
+  return { rows, daysPassed: dates.length, loading, isDemo, reload: load };
 }

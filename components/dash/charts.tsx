@@ -10,11 +10,15 @@ export function BarLineChart({
   barName,
   lineName,
   formatBar,
+  formatLine = (n) => String(n),
+  sameScale = false,
 }: {
   data: Point[];
   barName: string;
   lineName: string;
   formatBar: (n: number) => string;
+  formatLine?: (n: number) => string;
+  sameScale?: boolean; // одна шкала для столбцов и линии (например, факт и план в $)
 }) {
   const [hover, setHover] = useState<number | null>(null);
 
@@ -24,8 +28,12 @@ export function BarLineChart({
   const innerW = W - pad.left - pad.right;
   const innerH = H - pad.top - pad.bottom;
 
-  const maxBar = Math.max(...data.map((d) => d.bar), 1) * 1.15;
-  const maxLine = Math.max(...data.map((d) => d.line), 1) * 1.15;
+  let maxBar = Math.max(...data.map((d) => d.bar), 1) * 1.15;
+  let maxLine = Math.max(...data.map((d) => d.line), 1) * 1.15;
+  if (sameScale) {
+    maxBar = Math.max(maxBar, maxLine);
+    maxLine = maxBar;
+  }
   const step = innerW / data.length;
   const barW = Math.min(32, step * 0.55);
 
@@ -79,7 +87,7 @@ export function BarLineChart({
         >
           <div className="muted">{data[hover].label}</div>
           <div><i className="sw sw-bar" />{barName}: <b>{formatBar(data[hover].bar)}</b></div>
-          <div><i className="sw sw-line" />{lineName}: <b>{data[hover].line}</b></div>
+          <div><i className="sw sw-line" />{lineName}: <b>{formatLine(data[hover].line)}</b></div>
         </div>
       )}
     </div>

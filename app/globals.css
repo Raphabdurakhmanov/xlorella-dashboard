@@ -468,3 +468,12 @@ img { max-width: 100%; height: auto; }
 .hero-visual .product-motion { width:auto; height:100%; }
 .hero-visual .bottle-image { width:auto; height:100%; }
 @media (max-width:600px){ .hero-visual .bottle { width:auto; height:440px; } }
+
+/* логотип: аккуратный размер, без растворения на светлом фоне */
+.logo { display:flex; align-items:center; line-height:0; }
+.logo .logo-image { mix-blend-mode:normal; filter:drop-shadow(0 6px 14px rgba(0,0,0,.25)); }
+.landing-top .logo .logo-image { width:150px; height:auto; max-height:none; }
+.logo-on-light { display:none; }
+[data-theme="light"] .logo-on-dark { display:none; }
+[data-theme="light"] .logo-on-light { display:block; filter:none; }
+@media (max-width:600px){ .landing-top .logo .logo-image { width:110px; } }
