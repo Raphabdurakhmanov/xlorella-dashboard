@@ -11,8 +11,8 @@ const montserrat = Montserrat({
 });
 
 export const metadata: Metadata = {
-  title: "Xlorella — панель продаж",
-  description: "Реклама, лиды, заказы и склад Xlorella",
+  title: "Lifera Xlorella — Sales Dashboard",
+  description: "Sales dashboard for Lifera Xlorella: ads, leads, orders and stock.",
 };
 
 // ставим тему до отрисовки, чтобы не было вспышки светлой/тёмной

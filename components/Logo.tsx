@@ -1,6 +1,16 @@
 import Image from "next/image";
+
 export function Logo() {
-  return <div className="logo lifera-logo" aria-label="Lifera XLORELLA">
-    <Image src="/brand/lifera-logo.jpg" alt="Lifera XLORELLA" width={260} height={164} priority />
-  </div>;
+  return (
+    <div className="logo" aria-label="Lifera Xlorella">
+      <Image
+        src="/brand/lifera-logo.png"
+        alt="Lifera Xlorella"
+        width={220}
+        height={92}
+        priority
+        className="logo-image"
+      />
+    </div>
+  );
 }

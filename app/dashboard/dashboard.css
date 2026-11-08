@@ -992,19 +992,3 @@
   .chart-box { overflow-x: auto; }
   .chart-box svg { min-width: 520px; }
 }
-
-/* Dashboard visual refinement */
-.dash {padding:20px clamp(14px,3.5vw,54px) 55px}
-.dash-bg {background:radial-gradient(ellipse 50% 40% at 85% 0%,rgba(41,109,73,.30),transparent 75%),radial-gradient(ellipse 50% 55% at 0% 90%,rgba(18,80,53,.23),transparent 80%),linear-gradient(145deg,#061c14,#07150f 65%,#0b281d)}
-.dash-header {max-width:1480px;top:14px;border-radius:20px;padding:12px 18px;background:rgba(8,34,24,.85);box-shadow:0 16px 45px rgba(0,0,0,.22)}
-.dash-tabs {justify-content:flex-start;gap:3px}
-.dash-tabs button {border-radius:10px;padding:10px 12px;transition:background .2s,color .2s}
-.dash-tabs button:hover {background:rgba(255,255,255,.07)}
-.dash-tabs button.active {color:var(--accent);background:rgba(134,237,113,.11)}
-.dash-tabs button.active::after {left:22%;right:22%;bottom:3px;box-shadow:none}
-.tab-content {max-width:1480px;gap:22px}
-.dash .card {border-radius:20px}
-.dash input,.dash select,.dash textarea {max-width:100%}
-@media(max-width:900px){.dash-header{flex-wrap:wrap;border-radius:18px;gap:10px}.dash-tabs{order:3;flex-basis:100%;justify-content:flex-start}.dash-header-right{margin-left:auto}}
-@media(max-width:560px){.dash{padding:10px 10px 32px}.dash-header{top:6px;padding:10px;border-radius:14px}.dash-tabs button{font-size:11px;padding:9px 10px}.dash-header .logo{font-size:13px}.tab-content{gap:14px}}
-[data-theme="light"] .dash-header {background:rgba(246,255,247,.88)}

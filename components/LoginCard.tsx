@@ -35,17 +35,6 @@ export function LoginCard() {
     router.push("/dashboard");
   }
 
-  async function handleReset() {
-    setError("");
-    if (!email.trim()) { setError("Enter your email address first / Сначала укажите email"); return; }
-    const supabase = getSupabase();
-    if (!supabase) { setError("Password recovery requires Supabase configuration / Для восстановления пароля настройте Supabase"); return; }
-    setLoading(true);
-    const { error } = await supabase.auth.resetPasswordForEmail(email, { redirectTo: `${window.location.origin}/reset-password` });
-    setLoading(false);
-    setError(error ? "Unable to send reset email / Не удалось отправить письмо" : "Check your email for a reset link / Проверьте почту");
-  }
-
   async function handleGoogle() {
     const supabase = getSupabase();
     if (!supabase) {
@@ -79,7 +68,7 @@ export function LoginCard() {
         <label>
           <span className="label-row">
             {t.login.password}
-            <button type="button" className="link-small" onClick={handleReset} disabled={loading}>{t.login.forgot}</button>
+            <a href="#" className="link-small">{t.login.forgot}</a>
           </span>
           <input
             type="password"

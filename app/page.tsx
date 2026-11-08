@@ -1,13 +1,12 @@
 "use client";
 
-import Image from "next/image";
+import { Bottle } from "@/components/Bottle";
 import { Bubbles } from "@/components/Bubbles";
 import { LoginCard } from "@/components/LoginCard";
 import { Logo } from "@/components/Logo";
 import { useApp } from "@/components/Providers";
 import { Toggles } from "@/components/Toggles";
 
-// маленькая стрелка в кружке, как на референсе
 function ArrowDot() {
   return (
     <span className="arrow-dot" aria-hidden="true">
@@ -29,9 +28,13 @@ export default function LandingPage() {
     { title: l.featStock, sub: l.featStockSub, icon: "M21 8l-9-5-9 5 9 5 9-5zM3 8v8l9 5 9-5V8M12 13v8" },
   ];
 
+  const proofPoints = [l.callAlga, l.callChlorophyll, l.callSyrup];
+
   return (
     <main className="landing">
       <Bubbles />
+      <div className="mesh mesh-a" aria-hidden="true" />
+      <div className="mesh mesh-b" aria-hidden="true" />
 
       <header className="landing-top">
         <Logo />
@@ -39,43 +42,56 @@ export default function LandingPage() {
       </header>
 
       <section className="hero">
-        {/* левая колонка — текст */}
         <div className="hero-text">
           <span className="eyebrow">{l.eyebrow}</span>
           <h1 className="hero-title">
-            <span className="neon">XLO</span>RELLA
+            <span className="neon">{l.title.slice(0, 3)}</span>
+            {l.title.slice(3)}
           </h1>
           <p className="hero-sub">{l.subtitle}</p>
           <p className="hero-desc">{l.text}</p>
+
+          <div className="hero-points">
+            {proofPoints.map((item) => (
+              <span key={item} className="hero-point glass">
+                {item}
+              </span>
+            ))}
+          </div>
+
           <p className="disclaimer">{t.common.disclaimer}</p>
         </div>
 
-        {/* центр — бутылка и выноски */}
-        <div className="hero-visual">
-          
-          <div className="product-photo-frame">
-            <Image src="/brand/lifera-product.jpg" alt="Lifera XLORELLA — original chlorella drink bottle beside a mountain lake" fill sizes="(max-width: 680px) 100vw, (max-width: 1150px) 50vw, 33vw" priority className="product-photo" />
-            <div className="product-photo-caption"><span className="photo-caption-mark">LIFERA</span><span>XLORELLA · NATURAL BOTANICAL DRINK</span></div>
+        <div className="hero-visual glass">
+          <div className="visual-scene" aria-hidden="true" />
+          <div className="visual-vignette" aria-hidden="true" />
+          <div className="pedestal" aria-hidden="true" />
+
+          <div className="visual-badge glass">
+            <span className="visual-badge-top">Lifera</span>
+            <strong>{l.subtitle}</strong>
+            <small>{l.callChlorophyllSub}</small>
           </div>
 
-          <div className="callout c1">
+          <Bottle className="bottle" />
+
+          <div className="callout c1 glass">
             <ArrowDot />
             <b>{l.callChlorophyll}</b>
             <small>{l.callChlorophyllSub}</small>
           </div>
-          <div className="callout c2">
+          <div className="callout c2 glass">
             <ArrowDot />
             <b>{l.callSyrup}</b>
             <small>{l.callSyrupSub}</small>
           </div>
-          <div className="callout c3">
+          <div className="callout c3 glass">
             <ArrowDot />
             <b>{l.callAlga}</b>
             <small>{l.callAlgaSub}</small>
           </div>
         </div>
 
-        {/* справа — вход */}
         <div className="hero-login">
           <LoginCard />
         </div>
