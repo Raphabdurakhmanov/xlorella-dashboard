@@ -5,7 +5,7 @@ export function Bottle({ className = "" }: { className?: string }) {
     <div className={className} aria-hidden="true">
       <div className="bottle-backdrop" />
       <Image
-        src="/brand/product-bottle.png"
+        src="/brand/product-bottle-v2.png"
         alt="Lifera Xlorella chlorella syrup bottle"
         width={520}
         height={980}

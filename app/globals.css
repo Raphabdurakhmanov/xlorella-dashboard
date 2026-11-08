@@ -124,7 +124,7 @@ img { max-width: 100%; height: auto; }
   background:rgba(14,36,24,.56); color:var(--accent);
 }
 .hero-title {
-  font-family:var(--font-head, system-ui), sans-serif; font-size:clamp(56px, 7.2vw, 104px);
+  font-family:var(--font-head, system-ui), sans-serif; font-size:clamp(44px, 5vw, 80px); white-space:nowrap;
   line-height:.94; letter-spacing:1px; margin:20px 0 8px; font-weight:800;
 }
 .neon { color:var(--accent); text-shadow:0 0 28px color-mix(in srgb, var(--accent) 52%, transparent); }
